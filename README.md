@@ -13,6 +13,7 @@ This is a fun and practical project using **Selenium** for browser automation an
 - ✅ Logs into Twitter and tweets a complaint if speed is too low
 - ✅ Uses `.env` to protect sensitive login information
 - ✅ Modular, clean, and easy to customize
+- ✅ Optional headless mode and configurable wait times
 
 ---
 
@@ -78,11 +79,22 @@ The bot will:
 
 ## 🔧 Configuration
 
-You can change the expected internet speed inside `main.py`:
+Configuration is now handled through environment variables loaded from your
+`.env` file. In addition to `USERNAME` and `PASSWORD`, you can set:
 
-```python
-PROMISED_DOWN = 1000  # in Mbps
-PROMISED_UP = 1000
+- `PROMISED_DOWN` – expected download speed (default: `1000` Mbps)
+- `PROMISED_UP` – expected upload speed (default: `1000` Mbps)
+- `HEADLESS` – set to `true` to run Chrome without a visible window
+- `WAIT_TIMEOUT` – custom Selenium wait time in seconds
+
+Example `.env` snippet:
+
+```env
+USERNAME=your_twitter_email
+PASSWORD=your_twitter_password
+PROMISED_DOWN=100
+PROMISED_UP=20
+HEADLESS=true
 ```
 
 ---
