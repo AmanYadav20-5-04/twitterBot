@@ -1,21 +1,22 @@
-import time
-import os
-from dotenv import load_dotenv
+"""Entry point for running the internet speed Twitter bot."""
+
 from Speedtwitterbot import InternetSpeedTwitterBot
+from config import Settings
 
-# Load environment variables
-load_dotenv()
+settings = Settings()
 
-PROMISED_UP = 1000
-PROMISED_DOWN = 1000
-TWITTER_USERNAME = os.getenv("USERNAME")
-TWITTER_PASSWORD = os.getenv("PASSWORD")
-
-bot = InternetSpeedTwitterBot()
+bot = InternetSpeedTwitterBot(headless=settings.headless, wait_timeout=settings.wait_timeout)
 bot.get_internet_speed()
 
-if bot.down < PROMISED_DOWN or bot.up < PROMISED_UP:
-    message = f"Hey Internet Provider, why is my internet speed {bot.down}down/{bot.up}up when I pay for {PROMISED_DOWN}down/{PROMISED_UP}up?"
-    bot.tweet_at_provider(user=TWITTER_USERNAME, password=TWITTER_PASSWORD, message=message)
+if bot.down < settings.promised_down or bot.up < settings.promised_up:
+    message = (
+        f"Hey Internet Provider, why is my internet speed {bot.down}down/{bot.up}up "
+        f"when I pay for {settings.promised_down}down/{settings.promised_up}up?"
+    )
+    bot.tweet_at_provider(
+        user=settings.twitter_username,
+        password=settings.twitter_password,
+        message=message,
+    )
 
 bot.close()
